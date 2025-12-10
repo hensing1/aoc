@@ -8,15 +8,43 @@ local function parse_input()
   return points
 end
 
-local points = parse_input()
-local lastx, lasty, dir, prevdir = "", "", "", ""
-local prevp = points[#points]
-for i, p in ipairs(points) do
-  if p.x < prevp.x then lastx = "left" end
-  if p.x > prevp.x then lastx = "right" end
-  if p.y < prevp.y then lasty = "up " end
-  if p.y > prevp.y then lasty = "down " end
-  dir = lasty .. lastx
-  if dir ~= prevdir then print(i .. " " .. dir) end
-  prevdir = dir
+local function rect_size(a, b)
+  local dx = math.abs(a.x - b.x) + 1
+  local dy = math.abs(a.y - b.y) + 1
+  return dx * dy
 end
+
+local function is_inside_rect(point, rec1, rec2)
+	local in_x = (rec1.x < point.x and point.x < rec2.x) or
+							 (rec2.x < point.x and point.x < rec1.x)
+	local in_y = (rec1.y < point.y and point.y < rec2.y) or
+							 (rec2.y < point.y and point.y < rec1.y)
+	return in_x and in_y
+end
+
+local points = parse_input()
+
+local dickhead_point_1 = points[249]
+local dickhead_point_2 = points[250]
+
+local max = 0
+for i = 1, 248 do
+	local size = rect_size(dickhead_point_1, points[i])
+	if size <= max then goto continue end
+	for j=1, 248 do
+		if is_inside_rect(points[j], dickhead_point_1, points[i]) then goto continue end
+	end
+	max = size
+    ::continue::
+end
+for i = 251, #points do
+	local size = rect_size(dickhead_point_2, points[i])
+	if size <= max then goto continue end
+	for j=251, #points do
+		if is_inside_rect(points[j], dickhead_point_2, points[i]) then goto continue end
+	end
+	max = size
+    ::continue::
+end
+
+print(max)
