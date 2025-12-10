@@ -12,7 +12,7 @@ local function by_x(a, b)
   return a.x < b.x
 end
 
-local function square_size(a, b)
+local function rect_size(a, b)
   local dx = math.abs(a.x - b.x) + 1
   local dy = math.abs(a.y - b.y) + 1
   return dx * dy
@@ -56,18 +56,18 @@ end
 -- print((#points) ^ 2)
 -- print(#top_left * #bottom_right + #top_right * #bottom_left)
 
-local max_square = 0
+local max_rect = 0
 
 for _, point_a in ipairs(bottom_left) do
   for _, point_b in ipairs(top_right) do
-    max_square = math.max(max_square, square_size(point_a, point_b))
+    max_rect = math.max(max_rect, rect_size(point_a, point_b))
   end
 end
 
 for _, point_a in ipairs(bottom_right) do
   for _, point_b in ipairs(top_left) do
-    max_square = math.max(max_square, square_size(point_a, point_b))
+    max_rect = math.max(max_rect, rect_size(point_a, point_b))
   end
 end
 
-print(max_square)
+print(max_rect)
