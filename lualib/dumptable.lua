@@ -1,4 +1,4 @@
-function dump(o, indent)
+local function dump(o, indent)
 	indent = indent or ""
 	if type(o) == "table" then
 		local s = "{\n"
